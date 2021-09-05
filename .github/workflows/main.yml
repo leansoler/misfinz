@@ -1,14 +1,32 @@
-name: Build Vue app
-on: [push]
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: 14
+
 jobs:
-  build_vue:
-    runs-on: ubuntu-latest
-    name: Build Vue
+  test:
+    runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - id: Build-Vue
-      uses: xRealNeon/VuePagesAction@1.0.0
-      with:
-        username: 'leansoler'
-        reponame: 'misfinz'
-        token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - name: Run npm install
+        run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_PAT }} # Personal Access Token to use packages from Github Registry
+      - name: Run npm test
+        run: npm run test:unit
+      - name: Save coverage artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: lcov
+          path: coverage/lcov.info
