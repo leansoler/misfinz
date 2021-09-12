@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <Panel> Hello world </Panel>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Panel from "primevue/panel";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    Panel,
   },
 };
 </script>
@@ -22,5 +21,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.p-panel p {
+  line-height: 1.5;
+  margin: 0;
 }
 </style>
